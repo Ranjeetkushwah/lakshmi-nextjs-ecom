@@ -1,8 +1,10 @@
 import { emailVerificationLink } from "@/email/emailVerification";
 import { connectDB } from "@/lib/databaseConnection";
-import { response } from "@/lib/helperFunction";
+import { catchError, response1 } from "@/lib/helperFunction";
 import { zSchema } from "@/lib/zodSchema";
 import UserModel from "@/models/User.model";
+import { SignJWT } from 'jose';
+import { sendMail } from '@/lib/sendMail';
 
 export async function POST(request){
     try {
@@ -14,17 +16,20 @@ export async function POST(request){
         const validatedData=validationSchema.safeParse(payload)
 
         if(!validatedData.success){
-            return response(false, 401, 'Invalid or missing input field.', validatedData.error)
+            return response1(false, 401, 'Invalid or missing input field.', validatedData.error)
         }
+
+        const { name, email, password } = validatedData.data
+
         // check already registered users
-        const checkUser = await UserModel.exists({email})
+        const checkUser = await UserModel.exists({ email})
         if (checkUser){
-            return response(true, 409, 'User already registered.')
+            return response1(false, 409, 'User already registered.')
         }
         // new registration 
         const NewRegistration = new UserModel({
-            name, email, password 
-        })
+            name, email, password
+        })          
 
         await NewRegistration.save()
 
@@ -36,13 +41,13 @@ export async function POST(request){
         .setProtectedHeader({alg:'HS256'})
         .sign(secret)
 
-        await sendMail('Email Verification request form  Developer Ranjeet',
+        await sendMail('Email Verification request from Developer Ranjeet',
             email, emailVerificationLink(`${process.env.NEXT_PUBLIC_BASE_URL}/verify-email/${token}`)
-        )
+        ) 
  
-        return response(true, 200, 'Registration success, please verify your email address.')
+        return response1(true, 200, 'Registration success, please verify your email address.')
 
     } catch (error) {
-        
+        return catchError(error, 'Registration failed.')
     }
 }

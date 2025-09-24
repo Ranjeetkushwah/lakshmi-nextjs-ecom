@@ -21,6 +21,7 @@ import ButtonLoading from '@/components/Application/ButtonLoading'
 import z from 'zod'
 import Link from 'next/link'
 import { WEBSITE_LOGIN } from '@/routes/WedsitePanelRoutes'
+import axios from 'axios'
 
 
 const RegisterPage = () => {
@@ -48,7 +49,19 @@ const RegisterPage = () => {
   })
 
   const handleRegisterSubmit = async (value) => {
-    console.log("value of this is ", value);
+    try {
+      setLoading(true);
+      const { data: registerResponse } = await axios.post('/api/auth/register', value)
+      if (!registerResponse.success) {
+        throw new Error(registerResponse.message || 'Registration failed.')
+      }
+      form.reset()
+      alert(registerResponse.message)
+    } catch (error) {
+      alert(error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -103,7 +116,7 @@ const RegisterPage = () => {
                       <FormItem >
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type= "password" placeholder="••••••••" {...field} />
+                          <Input type= "password" placeholder="enter your password" {...field} />
                         </FormControl>
                        
                         <FormMessage />
@@ -120,7 +133,7 @@ const RegisterPage = () => {
                       <FormItem className='relative'>
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
-                          <Input type={showPassword ? "password" : "text"} placeholder="••••••••" {...field} />
+                          <Input type={showPassword ? "password" : "text"} placeholder="enter your confirm password" {...field} />
                         </FormControl>
                         <button type="button" className='absolute top-8 right-2 cursor-pointer'>
                           {showPassword ? <FaRegEyeSlash onClick={() => setShowPassword(!showPassword)} /> : <FaRegEye onClick={() => setShowPassword(!showPassword)} />}

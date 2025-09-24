@@ -30,7 +30,7 @@ const LoginPage = () => {
       email: true,
     })
     .extend({
-      password: z.string().nonempty({ message: "Password is required" }),
+      password: z.string().trim().nonempty({ message: "Password is required" }),
     });
 
   const form = useForm({
