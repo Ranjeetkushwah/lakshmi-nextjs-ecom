@@ -42,7 +42,7 @@ export async function POST(request){
         .sign(secret)
 
         await sendMail('Email Verification request from Developer Ranjeet',
-            email, emailVerificationLink(`${process.env.NEXT_PUBLIC_BASE_URL}/verify-email/${token}`)
+            email, emailVerificationLink(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/verify-email/${token}`)
         ) 
  
         return response1(true, 200, 'Registration success, please verify your email address.')
