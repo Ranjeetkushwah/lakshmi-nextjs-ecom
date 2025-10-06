@@ -21,6 +21,8 @@ import ButtonLoading from "@/components/Application/ButtonLoading";
 import z from "zod";
 import Link from "next/link";
 import { WEBSITE_REGISTER } from "@/routes/WedsitePanelRoutes";
+import { showToast } from "@/lib/showToast";
+import axios from "axios";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -42,7 +44,19 @@ const LoginPage = () => {
   });
 
   const handleLoginSubmit = async (value) => {
-    console.log("value of this is ", value);
+    try {
+      setLoading(true);
+      const { data: loginResponse } = await axios.post('/api/auth/login', value)
+      if (!loginResponse.success) {
+        throw new Error(loginResponse.message || 'Login failed.')
+      }
+      form.reset()
+      showToast("success", loginResponse.message)
+    } catch (error) {
+      showToast("error", error.message)
+    } finally {
+      setLoading(false)
+    }
   };
 
   return (

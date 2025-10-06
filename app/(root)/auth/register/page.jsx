@@ -22,6 +22,7 @@ import z from 'zod'
 import Link from 'next/link'
 import { WEBSITE_LOGIN } from '@/routes/WedsitePanelRoutes'
 import axios from 'axios'
+import { showToast } from '@/lib/showToast'
 
 
 const RegisterPage = () => {
@@ -56,9 +57,9 @@ const RegisterPage = () => {
         throw new Error(registerResponse.message || 'Registration failed.')
       }
       form.reset()
-      alert(registerResponse.message)
+      showToast("success", registerResponse.message)
     } catch (error) {
-      alert(error.message)
+      showToast("error", error.message)
     } finally {
       setLoading(false)
     }
