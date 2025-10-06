@@ -24,8 +24,11 @@ import { WEBSITE_REGISTER } from "@/routes/WedsitePanelRoutes";
 import { showToast } from "@/lib/showToast";
 import axios from "axios";
 import OTPVerification from "@/components/Application/OTPVerification";
+import { useDispatch } from "react-redux";
+import { login } from "@/store/reducer/authReducer";
 
 const LoginPage = () => {
+  const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
   const [otpVerificationLoading, setOtpVerificationLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
@@ -73,6 +76,9 @@ const LoginPage = () => {
       }
       setOtpEmail('')
       showToast("success", verifyOtpResponse.message)
+
+      dispatch(login(verifyOtpResponse.data))
+
     } catch (error) {
       showToast("error", error.message)
     } finally {
