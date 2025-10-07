@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import ButtonLoading from "@/components/Application/ButtonLoading";
 import z from "zod";
 import Link from "next/link";
-import { WEBSITE_REGISTER } from "@/routes/WedsitePanelRoutes";
+import { WEBSITE_REGISTER, WEBSITE_RESETPASSWORD } from "@/routes/WedsitePanelRoutes";
 import { showToast } from "@/lib/showToast";
 import axios from "axios";
 import OTPVerification from "@/components/Application/OTPVerification";
@@ -184,7 +184,7 @@ const LoginPage = () => {
                         </div>
                         <div className="mt-3">
                           <Link
-                            href=""
+                            href={WEBSITE_RESETPASSWORD}
                             className="mt-3 text-blue-500 hover:underline"
                           >
                             Forgot your password?
