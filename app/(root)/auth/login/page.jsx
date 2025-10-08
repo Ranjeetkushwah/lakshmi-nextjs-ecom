@@ -20,15 +20,19 @@ import { Input } from "@/components/ui/input";
 import ButtonLoading from "@/components/Application/ButtonLoading";
 import z from "zod";
 import Link from "next/link";
-import { WEBSITE_REGISTER, WEBSITE_RESETPASSWORD } from "@/routes/WedsitePanelRoutes";
+import { USER_DASHBOARD, WEBSITE_REGISTER, WEBSITE_RESETPASSWORD } from "@/routes/WedsitePanelRoutes";
 import { showToast } from "@/lib/showToast";
 import axios from "axios";
 import OTPVerification from "@/components/Application/OTPVerification";
 import { useDispatch } from "react-redux";
 import { login } from "@/store/reducer/authReducer";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ADMIN_DASHBOARD } from "@/routes/AdminPanelRoutes";
 
 const LoginPage = () => {
   const dispatch = useDispatch()
+  const searchParams = useSearchParams()
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [otpVerificationLoading, setOtpVerificationLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
@@ -78,6 +82,12 @@ const LoginPage = () => {
       showToast("success", verifyOtpResponse.message)
 
       dispatch(login(verifyOtpResponse.data))
+
+      if (searchParams.has('callback')) {
+        router.push(searchParams.get('callback'))
+      }else{
+        verifyOtpResponse.data.role === 'admin' ? router.push(ADMIN_DASHBOARD) :router.push(USER_DASHBOARD)
+      }
 
     } catch (error) {
       showToast("error", error.message)
