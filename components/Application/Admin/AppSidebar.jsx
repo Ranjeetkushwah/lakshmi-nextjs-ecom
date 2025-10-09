@@ -1,10 +1,8 @@
+'use client'
 import React from 'react'
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -12,6 +10,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import Image from 'next/image'
 import logoBlack from '@/public/assets/images/logo-black-ecom.png'
@@ -23,16 +22,15 @@ import { adminAppSidebarMenu } from '@/lib/adminSidebarMenu'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import Link from 'next/link'
 
-
-
 function AppSidebar() {
+  const { toggleSidebar } = useSidebar()
   return (
-    <Sidebar>
+    <Sidebar className='z-50'>
       <SidebarHeader className='border-b h-17 p-0' >
         <div className='flex justify-between items-center px-4 '>
           <Image src={logoBlack.src} height={50} width={logoBlack.width} className='block dark:hidden h-[80px] w-auto' alt='logo dark' />
           <Image src={logoWhite.src} height={50} width={logoWhite.width} className='hidden dark:block h-[80px] w-auto' alt='logo white' />
-          <Button type='button' size='icon' className='bg-blue-600 hover:bg-blue-500'>
+          <Button onClick={toggleSidebar} type='button' size='icon' className='bg-blue-600 hover:bg-blue-500 md:hidden'>
             <IoMdClose />
           </Button>
         </div>
@@ -75,7 +73,7 @@ function AppSidebar() {
 
               </SidebarMenuItem>
             </Collapsible>
-            ))
+          ))
           }
         </SidebarMenu>
       </SidebarContent>
