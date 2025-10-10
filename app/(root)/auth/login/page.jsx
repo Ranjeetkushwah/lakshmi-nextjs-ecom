@@ -1,7 +1,8 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
 import React, { useState } from "react";
-import Logo from "@/public/assets/images/logo-black-ecom.png";
+import logoBlack from "@/public/assets/images/logo-black-ecom.png";
+import logoWhite from "@/public/assets/images/logo-white-ecom.png";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -72,7 +73,7 @@ const LoginPage = () => {
 
   // otp verification 
   const handleOtpVerification = async (values) => {
-     try {
+    try {
       setOtpVerificationLoading(true);
       const { data: verifyOtpResponse } = await axios.post('/api/auth/verify-otp', values)
       if (!verifyOtpResponse.success) {
@@ -85,8 +86,8 @@ const LoginPage = () => {
 
       if (searchParams.has('callback')) {
         router.push(searchParams.get('callback'))
-      }else{
-        verifyOtpResponse.data.role === 'admin' ? router.push(ADMIN_DASHBOARD) :router.push(USER_DASHBOARD)
+      } else {
+        verifyOtpResponse.data.role === 'admin' ? router.push(ADMIN_DASHBOARD) : router.push(USER_DASHBOARD)
       }
 
     } catch (error) {
@@ -100,13 +101,8 @@ const LoginPage = () => {
     <Card className="w-[400px]">
       <CardContent>
         <div className="flex justify-center">
-          <Image
-            src={Logo}
-            width={Logo.width}
-            height={Logo.height}
-            alt="Logo_store"
-            className="max-w-[150px]"
-          />
+          <Image src={logoBlack.src} height={logoBlack.height} width={logoBlack.width} className='block dark:hidden max-w-[150px]' alt="Logo black store" />
+          <Image src={logoWhite.src} height={logoWhite.height} width={logoWhite.width} className='hidden dark:block max-w-[150px]' alt='logo white store' />
         </div>
         {
           !otpEmail ?
