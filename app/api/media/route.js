@@ -3,11 +3,11 @@ import { catchError, isAuthenticated, response1 } from "@/lib/helperFunction";
 import MediaModel from "@/models/Media.model";
 import { NextResponse } from "next/server";
 
-export async function GET({ request }) {
+export async function GET(request) {
     try {
         const Auth = await isAuthenticated('admin')
         if (!Auth.isAuth) {
-            return response1(false)
+            return response1(false, 403, "Unauthorized Access")
         }
         await connectDB();
 
