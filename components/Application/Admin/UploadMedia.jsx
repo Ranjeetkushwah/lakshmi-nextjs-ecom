@@ -5,7 +5,7 @@ import axios from 'axios';
 import { CldUploadWidget } from 'next-cloudinary';
 import { FaCloudUploadAlt } from "react-icons/fa";
 
-function UploadMedia({ isMultiple }) {
+function UploadMedia({ isMultiple, queryClient }) {
 
     const handleOnError = (error) => {
         showToast('error', error.statusText)
@@ -28,6 +28,7 @@ function UploadMedia({ isMultiple }) {
                 if (!MediaUploaResponse.success) {
                     throw new Error(MediaUploaResponse.message)
                 }
+                queryClient.invalidateQueries(['media-data'])
                 showToast('success', MediaUploaResponse.message)
             } catch (error) {
                 showToast('error', error)
