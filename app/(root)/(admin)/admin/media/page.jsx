@@ -162,14 +162,14 @@ const MediaPage = () => {
                                 <> <div className='text-red-500 text-sm'>Error: {error.message}</div> </>
                                 :
                                 <>
-                                    {data.pages.flatMap(page => page.mediaData.map(media => media._id)).length === 0 && <div className='text-center'>No media found.</div>}
+                                    {data.pages.flatMap(page => page?.mediaData?.map(media => media._id)).length === 0 && <div className='text-center'>No media found.</div>}
 
                                     <div className='grid lg:grid-cols-5 sm:grid-cols-3 grid-cols-2 gap-2 mb-5'>
 
                                         {data?.pages.map((page, index) => (
                                             <React.Fragment key={index}>
                                                 {
-                                                    page?.mediaData.map((media) => (<>
+                                                    page?.mediaData?.map((media) => (<>
                                                         <Media key={media._id}
                                                             media={media}
                                                             handleDelete={handleDelete}
