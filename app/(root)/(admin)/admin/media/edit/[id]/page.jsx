@@ -59,7 +59,7 @@ const EditMedia = ({ params }) => {
     if (mediaData && mediaData.success) {
       const data = mediaData.data
       form.reset({
-        _id: data.id,
+        _id: data._id,
         alt: data.alt,
         title: data.title
       })
